@@ -2,7 +2,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from auth import views
-from dvgm import settings
+from dvcms import settings
 
 app_name = 'insecureauth'
 urlpatterns = [

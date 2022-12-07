@@ -1,6 +1,6 @@
-# Damn Vulnerable Grade Management
+# Damn Vulnerable Class Management System
 
-Damn Vulnerable Grade Management (DVGM) is a web application that is vulnerable to a number of web vulnerabilities. It is intended to be used by security professionals to test their skills and tools in a legal environment, help web developers better understand the processes of securing web applications and to aid teachers/students to teach/learn web application security in a class room environment.
+Damn Vulnerable Class Management System is a web application that is vulnerable to a number of web vulnerabilities. It is intended to be used by security professionals to test their skills and tools in a legal environment, help web developers better understand the processes of securing web applications and to aid teachers/students to teach/learn web application security in a class room environment.
 
 ## Installation
 
