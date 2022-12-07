@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'grades.apps.GradesConfig',
     'lectures.apps.LecturesConfig',
+    'students.apps.StudentsConfig',
     'auth.apps.AuthConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -125,3 +126,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = 'insecureauth:login'
+
+LOGIN_URL = 'insecureauth:login'

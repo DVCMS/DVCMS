@@ -1,0 +1,12 @@
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Lecturer</th>
+    </tr>
+    {% for lecture in lectures %}
+    <tr>
+        <td>{{ lecture.name }}</td>
+        <td>{{ lecture.lecturer }}</td>
+    </tr>
+    {% endfor %}
+</table>

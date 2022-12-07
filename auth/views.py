@@ -20,6 +20,8 @@ class LoginView(FormView):
 
     def form_valid(self, form):
         login(self.request, User.objects.get(username=form.user_cache[0].username))
+        if self.request.GET.get('next'):
+            return redirect(self.request.GET.get('next'))
         return redirect('grades:list')
 
 
