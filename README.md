@@ -30,10 +30,10 @@ Migrate database and setup groups
 
 This will guide you through the process of creating a superuser and setting up the groups.
 
-Run the application
+Run the application from within environment
 
 ```bash
-pipenv run python manage.py runserver
+python manage.py runserver
 ```
 
 ## Usage
