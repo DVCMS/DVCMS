@@ -7,4 +7,5 @@ app_name = 'grades'
 urlpatterns = [
     path('', views.GradeListView.as_view(), name='list'),
     path('<int:pk>/edit', views.GradeUpdateView.as_view(), name='edit'),
+    path('new/', views.GradeCreateView.as_view(), name='create'),
 ]

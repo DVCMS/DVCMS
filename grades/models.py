@@ -12,8 +12,14 @@ class Grade(models.Model):
         MaxValueValidator(100),
         MinValueValidator(0)
     ])
-    comment = models.CharField(max_length=1000)
+    comment = models.CharField(max_length=1000, blank=True, null=True)
     submission = models.FileField(upload_to='submissions/', null=True, blank=True)
 
     def __str__(self):
         return f'{self.student.username} - {self.lecture.name}'
+
+    class Meta:
+        permissions = (
+            ('add_comment', 'Can add comment'),
+            ('change_grade_value', 'Can change grade'),
+        )

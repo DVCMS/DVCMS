@@ -1,9 +1,11 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.http import HttpResponseNotFound
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, CreateView
 
-from grades.forms import FilterLecturerForm
+from auth.roles import is_lecturer, is_student
+from grades.forms import FilterLecturerForm, GradeCreateForm
 from grades.models import Grade
 
 
@@ -14,26 +16,30 @@ class GradeListView(ListView):
     context_object_name = 'grades'
 
     def get_queryset(self):
-        lecturer = self.request.GET.get("lecturer")
-        if lecturer:
-            return Grade.objects.raw(f"""
-                SELECT *
-                FROM   'grades_grade'
-                       INNER JOIN 'auth_user'
-                               ON( 'grades_grade'. 'student_id' = 'auth_user'. 'id' )
-                       INNER JOIN 'lectures_lecture'
-                               ON( 'grades_grade'. 'lecture_id' = 'lectures_lecture'. 'id' )
-                       INNER JOIN 'auth_user' T4
-                               ON( 'lectures_lecture'. 'lecturer_id' = T4. 'id' )
-                WHERE ( 'auth_user'. 'username' = '{self.request.user.username}'
-                        AND T4. 'username' LIKE '%{lecturer}%') 
-            """)
-        return Grade.objects.filter(student=self.request.user)
+        if is_student(self.request.user):
+            lecturer = self.request.GET.get("lecturer")
+            if lecturer:
+                return Grade.objects.raw(f"""
+                    SELECT *
+                    FROM   'grades_grade'
+                           INNER JOIN 'auth_user'
+                                   ON( 'grades_grade'. 'student_id' = 'auth_user'. 'id' )
+                           INNER JOIN 'lectures_lecture'
+                                   ON( 'grades_grade'. 'lecture_id' = 'lectures_lecture'. 'id' )
+                           INNER JOIN 'auth_user' T4
+                                   ON( 'lectures_lecture'. 'lecturer_id' = T4. 'id' )
+                    WHERE ( 'auth_user'. 'username' = '{self.request.user.username}'
+                            AND T4. 'username' LIKE '%{lecturer}%') 
+                """)
+            return Grade.objects.filter(student=self.request.user)
+        elif is_lecturer(self.request.user):
+            return Grade.objects.filter(lecture__lecturer=self.request.user)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(GradeListView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
+        context['student'] = is_student(self.request.user)
+        context['lecturer'] = is_lecturer(self.request.user)
         context['filter_lecturer'] = FilterLecturerForm
         context['filtered'] = self.request.GET.get("lecturer")
         return context
@@ -43,8 +49,25 @@ class GradeListView(ListView):
 class GradeUpdateView(UpdateView):
     model = Grade
     template_name = 'grades/grade_edit.html'
-    fields = ['comment']
     success_url = reverse_lazy('grades:list')
 
-    def get_queryset(self):
-        return Grade.objects.filter(student=self.request.user)
+    def get(self, request, *args, **kwargs):
+        if is_lecturer(self.request.user):
+            self.fields = ['grade']
+        elif is_student(self.request.user):
+            self.fields = ['comment']
+        return super(GradeUpdateView, self).get(request, *args, **kwargs)
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(is_lecturer), name='dispatch')
+class GradeCreateView(CreateView):
+    model = Grade
+    template_name = 'grades/grade_create.html'
+    form_class = GradeCreateForm
+    success_url = reverse_lazy('grades:list')
+
+    def get_form_kwargs(self):
+        kwargs = super(GradeCreateView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs

@@ -27,7 +27,13 @@
     {% endfor %}
 </table>
 
+{% if student %}
 <form method="get">
     {{ filter_lecturer }}
     <input type="submit">
 </form>
+{% endif %}
+
+{% if lecturer %}
+<a href="{% url "grades:create" %}">New Grade</a>
+{% endif %}
