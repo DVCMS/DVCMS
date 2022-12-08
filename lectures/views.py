@@ -22,7 +22,7 @@ class LectureCreateView(CreateView):
     model = Lecture
     template_name = 'lectures/lecture_create.html'
     form_class = LectureForm
-    success_url = reverse_lazy('lectures:lecture_list')
+    success_url = reverse_lazy('lectures:list')
 
     def form_valid(self, form):
         form.instance.lecturer = self.request.user

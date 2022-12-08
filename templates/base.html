@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>DVCMS</title>
+    {% endblock %}
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+{% include 'navbar.html' %}
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}
+</body>
+</html>

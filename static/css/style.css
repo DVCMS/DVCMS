@@ -1,0 +1,14 @@
+ul {
+    padding-inline-start: 0;
+}
+
+li {
+    list-style-type: none;
+     display: inline-block;
+        margin: 0 1em;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+}

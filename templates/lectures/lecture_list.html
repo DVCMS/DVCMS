@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
 <table>
     <tr>
         <th>Name</th>
@@ -10,3 +14,9 @@
     </tr>
     {% endfor %}
 </table>
+    
+    <button>
+        <a href="{% url 'lectures:create' %}">New Lecture</a>
+    </button>
+
+{% endblock %}

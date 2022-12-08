@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
 {% if filtered %}
     Showing grades from lecturer {{ filtered|safe }}
 {% endif %}
@@ -35,5 +39,9 @@
 {% endif %}
 
 {% if lecturer %}
+    <button>
 <a href="{% url "grades:create" %}">New Grade</a>
+    </button>
 {% endif %}
+
+{% endblock %}
