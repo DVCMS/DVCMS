@@ -47,6 +47,8 @@ Create dummy data and then the application is ready to use.
 DVGM contains the following vulnerabilities:
 - SQL Injection
 - Cross-Site Scripting (XSS)
+- Missing server-side input validation
+- Weak password hashing
 
 ## License
 
