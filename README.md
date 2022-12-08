@@ -50,7 +50,7 @@ DVGM contains the following vulnerabilities:
 - Missing server-side input validation
 - Weak password hashing
 
-You can scan with (Bandit)[https://github.com/PyCQA/bandit] to find the vulnerabilities.
+You can scan with [Bandit](https://github.com/PyCQA/bandit) find the vulnerabilities.
 
 ```bash
 bandit -r .
