@@ -1,5 +1,4 @@
-from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
-from django.http import HttpResponseNotFound, HttpResponseBadRequest
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, CreateView
@@ -36,7 +35,6 @@ class GradeListView(ListView):
             return Grade.objects.all()
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super(GradeListView, self).get_context_data(**kwargs)
         context['student'] = is_student(self.request.user)
         context['lecturer'] = is_lecturer(self.request.user)
@@ -72,6 +70,7 @@ class GradeCreateView(CreateView):
         kwargs = super(GradeCreateView, self).get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
+
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(user_passes_test(is_student), name='dispatch')

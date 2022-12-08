@@ -6,8 +6,6 @@ python3 manage.py makemigrations
 # Migrate
 python3 manage.py migrate
 
-export DJANGO_SETTINGS_MODULE=dvcms.settings
-
 # Create student and lecturer groups
 python3 manage.py creategroups
 

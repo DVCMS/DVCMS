@@ -9,4 +9,4 @@ urlpatterns = [
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     path('reset_password/', views.ForgotPasswordView.as_view(), name='forgot_password'),
-    ]
+]

@@ -30,4 +30,3 @@ class StudentCreateView(CreateView):
         form.instance.save()
         form.instance.groups.add(students)
         return super(StudentCreateView, self).form_valid(form)
-

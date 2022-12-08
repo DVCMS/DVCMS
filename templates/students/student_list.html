@@ -2,20 +2,20 @@
 
 {% block content %}
 
-<table>
-    <tr>
-        <th>Name</th>
-    </tr>
-    {% for student in students %}
-    <tr>
-        <td>{{ student.username }}</td>
-    </tr>
-    {% endfor %}
+    <table>
+        <tr>
+            <th>Name</th>
+        </tr>
+        {% for student in students %}
+            <tr>
+                <td>{{ student.username }}</td>
+            </tr>
+        {% endfor %}
 
-</table>
+    </table>
 
     <button>
         <a href="{% url 'students:create' %}">New Student</a>
     </button>
 
-    {% endblock %}
+{% endblock %}

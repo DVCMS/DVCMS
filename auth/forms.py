@@ -1,10 +1,10 @@
 import hashlib
+
+from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django import forms
 
 from auth.models import SecurityQuestion
-from grades.models import Grade
 
 
 class AuthenticationForm(AuthenticationForm):
@@ -17,6 +17,7 @@ class AuthenticationForm(AuthenticationForm):
             if len(self.user_cache) == 0:
                 raise self.get_invalid_login_error()
         return self.cleaned_data
+
 
 class ForgotPasswordUsernameForm(forms.Form):
     username = forms.CharField(max_length=100)
