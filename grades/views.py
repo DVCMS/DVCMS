@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseBadRequest
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, CreateView
 
 from auth.roles import is_lecturer, is_student
-from grades.forms import FilterLecturerForm, GradeCreateForm
+from grades.forms import FilterLecturerForm, GradeCreateForm, GradeSubmitForm
 from grades.models import Grade
 
 
@@ -33,7 +33,7 @@ class GradeListView(ListView):
                 """)
             return Grade.objects.filter(student=self.request.user)
         elif is_lecturer(self.request.user):
-            return Grade.objects.filter(lecture__lecturer=self.request.user)
+            return Grade.objects.all()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -50,6 +50,7 @@ class GradeUpdateView(UpdateView):
     model = Grade
     template_name = 'grades/grade_edit.html'
     success_url = reverse_lazy('grades:list')
+    fields = ['grade', 'comment']
 
     def get(self, request, *args, **kwargs):
         if is_lecturer(self.request.user):
@@ -71,3 +72,20 @@ class GradeCreateView(CreateView):
         kwargs = super(GradeCreateView, self).get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(is_student), name='dispatch')
+class GradeSubmitView(CreateView):
+    model = Grade
+    template_name = 'grades/grade_submit.html'
+    form_class = GradeSubmitForm
+    success_url = reverse_lazy('grades:list')
+
+    def get_form_kwargs(self):
+        kwargs = super(GradeSubmitView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.student = self.request.user
+        return super(GradeSubmitView, self).form_valid(form)

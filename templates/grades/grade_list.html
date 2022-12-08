@@ -9,6 +9,9 @@
     <tr>
         <th>Lecturer</th>
         <th>Lecture</th>
+        {% if user.groups.all.0.name == "lecturer" %}
+        <th>Student</th>
+        {% endif %}
         <th>Grade</th>
         <th>Submission</th>
         <th>Comment</th>
@@ -17,11 +20,19 @@
     <tr>
         <td>{{ grade.lecture.lecturer }}</td>
         <td>{{ grade.lecture }}</td>
+        {% if user.groups.all.0.name == "lecturer" %}
+        <td>{{ grade.student }}</td>
+        {% endif %}
         <td>{{ grade.grade }}</td>
         <td>{{ grade.submission }}</td>
         <td>{{ grade.comment }}</td>
         <td>
+        {% if user.groups.all.0.name == "student" %}
             <a href="{% url "grades:edit" grade.id %}">Comment</a>
+        {% endif %}
+            {% if user.groups.all.0.name == "lecturer" %}
+            <a href="{% url "grades:edit" grade.id %}">Edit</a>
+            {% endif %}
         </td>
     </tr>
         {% empty %}

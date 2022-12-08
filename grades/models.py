@@ -10,8 +10,8 @@ class Grade(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     grade = models.IntegerField(validators=[
         MaxValueValidator(100),
-        MinValueValidator(0)
-    ])
+        MinValueValidator(0),
+    ], null=True, blank=True)
     comment = models.CharField(max_length=1000, blank=True, null=True)
     submission = models.FileField(upload_to='submissions/', null=True, blank=True)
 

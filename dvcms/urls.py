@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from dvcms import views
+
 urlpatterns = [
     path('grades/', include('grades.urls')),
     path('lectures/', include('lectures.urls')),
     path('students/', include('students.urls')),
     path('admin/', admin.site.urls),
     path('', include('auth.urls')),
+    path('', views.HomepageView.as_view(), name='home'),
 ]

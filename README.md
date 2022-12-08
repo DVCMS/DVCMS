@@ -16,11 +16,31 @@ Install dependencies
 pipenv install
 ```
 
+Enter environment
+
+```bash
+pipenv shell
+```
+
+Migrate database and setup groups
+
+```bash
+./scripts/setup.sh
+```
+
+This will guide you through the process of creating a superuser and setting up the groups.
+
 Run the application
 
 ```bash
 pipenv run python manage.py runserver
 ```
+
+## Usage
+
+Visit `http://localhost:8000/admin` and login with the superuser credentials you created in the setup script.
+
+Create dummy data and then the application is ready to use.
 
 ## Vulnerabilities
 
