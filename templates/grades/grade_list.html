@@ -42,7 +42,7 @@
         {% endfor %}
     </table>
 
-    {% if student and user.groups.all.0.name != "admin" %}
+    {% if user.groups.all.0.name == "student" %}
         <form method="get">
             {{ filter_lecturer }}
             <input type="submit">
