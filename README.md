@@ -38,9 +38,11 @@ python manage.py runserver
 
 ## Usage
 
-Visit `http://localhost:8000/admin` and login with the superuser credentials you created in the setup script.
+Visit `http://localhost:8000` to access the application.
 
-Create dummy data and then the application is ready to use.
+Visit `http://localhost:8000/admin` and login with the superuser credentials you created in the setup script to manage users.
+
+Remember to add new users to appropriate groups.
 
 ## Vulnerabilities
 
