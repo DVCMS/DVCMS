@@ -3,7 +3,7 @@
         <ul>
             <li><a href="/"><b>DVCMS</b></a></li>
             <li><a href="{% url "grades:list" %}">Grades</a></li>
-            {% if user.groups.all.0.name == "lecturer" %}
+            {% if user.groups.all.0.name == "lecturer" or user.groups.all.0.name == "admin" %}
                 <li><a href="{% url "lectures:list" %}">Lectures</a></li>
                 <li><a href="{% url "students:list" %}">Students</a></li>
             {% endif %}

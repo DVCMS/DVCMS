@@ -25,12 +25,12 @@
                 {% endif %}
                 <td>{{ grade.grade }}</td>
                 <td>{{ grade.submission }}</td>
-                <td>{{ grade.comment }}</td>
+                <td>{{ grade.comment|safe }}</td>
                 <td>
                     {% if user.groups.all.0.name == "student" %}
                         <a href="{% url "grades:edit" grade.id %}">Comment</a>
                     {% endif %}
-                    {% if user.groups.all.0.name == "lecturer" %}
+                    {% if user.groups.all.0.name == "lecturer" or user.groups.all.0.name == "admin" %}
                         <a href="{% url "grades:edit" grade.id %}">Edit</a>
                     {% endif %}
                 </td>
@@ -42,7 +42,7 @@
         {% endfor %}
     </table>
 
-    {% if student %}
+    {% if student and user.groups.all.0.name != "admin" %}
         <form method="get">
             {{ filter_lecturer }}
             <input type="submit">

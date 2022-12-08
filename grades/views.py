@@ -15,7 +15,9 @@ class GradeListView(ListView):
     context_object_name = 'grades'
 
     def get_queryset(self):
-        if is_student(self.request.user):
+        if is_lecturer(self.request.user):
+            return Grade.objects.all()
+        elif is_student(self.request.user):
             lecturer = self.request.GET.get("lecturer")
             if lecturer:
                 return Grade.objects.raw(f"""
@@ -31,8 +33,7 @@ class GradeListView(ListView):
                             AND T4. 'username' LIKE '%{lecturer}%') 
                 """)
             return Grade.objects.filter(student=self.request.user)
-        elif is_lecturer(self.request.user):
-            return Grade.objects.all()
+
 
     def get_context_data(self, **kwargs):
         context = super(GradeListView, self).get_context_data(**kwargs)
@@ -51,7 +52,9 @@ class GradeUpdateView(UpdateView):
     fields = ['grade', 'comment']
 
     def get(self, request, *args, **kwargs):
-        if is_lecturer(self.request.user):
+        if self.request.user.is_superuser:
+            self.fields = ['grade', 'comment']
+        elif is_lecturer(self.request.user):
             self.fields = ['grade']
         elif is_student(self.request.user):
             self.fields = ['comment']

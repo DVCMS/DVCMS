@@ -16,6 +16,9 @@ class StudentListView(ListView):
     context_object_name = 'students'
     ordering = ['last_name']
 
+    def get_queryset(self):
+        return User.objects.filter(groups__name='student')
+
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(user_passes_test(is_lecturer), name='dispatch')
@@ -26,7 +29,14 @@ class StudentCreateView(CreateView):
     success_url = reverse_lazy('students:list')
 
     def form_valid(self, form):
-        students = Group.objects.get(name='student')
+        role = form.cleaned_data['role']
         form.instance.save()
-        form.instance.groups.add(students)
-        return super(StudentCreateView, self).form_valid(form)
+        # if role is admin, make user a superuser
+        if role == 'admin':
+            form.instance.is_superuser = True
+            form.instance.is_staff = True
+            form.instance.save()
+
+        group = Group.objects.get(name=role)
+        form.instance.groups.add(group)
+        return super().form_valid(form)
